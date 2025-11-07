@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小米集团公司层战略分析</title>
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: Designed a tabbed SPA (Home, Industry, Strategy ID, Motives, Value Creation, Performance). This non-linear structure allows users to explore the report's theoretical concepts (like Motives or the 2x2 Matrix) independently, which is more user-friendly than the linear PowerPoint. Key interactions: 1) Interactive pie chart for revenue evolution. 2) Clickable 2x2 matrix to explore Eco-chain vs. Auto strategies. 3) Tabbed content for the '3 Motives'. -->
+    <!-- Visualization & Content Choices: 1. Smartphone Market -> Goal: Change -> Viz: Line Chart (Chart.js) -> Interaction: None -> Justification: Show trend. 2. Revenue Mix -> Goal: Change/Compare -> Viz: Pie Chart (Chart.js) -> Interaction: Buttons update year -> Justification: Show evolution interactively. 3. Profitability -> Goal: Compare -> Viz: Bar Chart (Chart.js) -> Interaction: None -> Justification: Clear segment comparison. 4. PEST/Porter's/2x2 Matrix -> Goal: Organize/Analyze -> Viz: HTML/Tailwind Grids -> Interaction: 2x2 Matrix is clickable -> Justification: Avoids SVG/Mermaid, allows for interactivity. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Inter 字体 */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        /* 选项卡激活状态 */
+        .nav-tab.active {
+            border-bottom-color: #2563eb;
+            color: #2563eb;
+            font-weight: 600;
+        }
+
+        /* 内容板块 */
+        .content-section {
+            display: none; /* 默认隐藏 */
+        }
+        .content-section.active {
+            display: block; /* 激活时显示 */
+        }
+        
+        /* 遵循提示的图表容器样式 */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px; 
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+
+        /* HTML/Tailwind 构建的波特五力图 */
+        .porter-five-forces {
+            display: grid;
+            grid-template-areas:
+                ".    supplier ."
+                "new  rivals   buyer"
+                ".    substitute .";
+            grid-template-columns: 1fr 1.5fr 1fr;
+            grid-template-rows: 1fr 1.5fr 1fr;
+            gap: 1rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .porter-box {
+            background-color: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+        
+        <!-- 头部 -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900">破局与重构：小米集团公司层战略分析</h1>
+            <p class="text-lg text-gray-600 mt-2">基于多元化动因与价值创造的理论透视</p>
+        </header>
+
+        <!-- 导航选项卡 -->
+        <nav class="flex flex-wrap justify-center border-b border-gray-300 mb-8">
+            <button class="nav-tab text-sm md:text-base py-3 px-4 border-b-2 border-transparent text-gray-600 hover:text-blue-500 active" data-target="home">首页</button>
+            <button class="nav-tab text-sm md:text-base py-3 px-4 border-b-2 border-transparent text-gray-600 hover:text-blue-500" data-target="industry">行业环境</button>
+            <button class="nav-tab text-sm md:text-base py-3 px-4 border-b-2 border-transparent text-gray-600 hover:text-blue-500" data-target="strategy-id">战略识别</button>
+            <button class="nav-tab text-sm md:text-base py-3 px-4 border-b-2 border-transparent text-gray-600 hover:text-blue-500" data-target="motives">核心动因</button>
+            <button class="nav-tab text-sm md:text-base py-3 px-4 border-b-2 border-transparent text-gray-600 hover:text-blue-500" data-target="value-creation">价值创造</button>
+            <button class="nav-tab text-sm md:text-base py-3 px-4 border-b-2 border-transparent text-gray-600 hover:text-blue-500" data-target="performance">绩效与风险</button>
+        </nav>
+
+        <!-- 内容区域 -->
+        <main id="content-area">
+
+            <!-- 1. 首页 (Home) -->
+            <section id="home-content" class="content-section active">
+                <div class="bg-white shadow-lg rounded-xl p-6 md:p-8">
+                    <h2 class="text-2xl font-bold mb-4 text-blue-700">项目简介：公司层战略</h2>
+                    <p class="text-gray-700 leading-relaxed mb-6">“公司层战略”旨在回答两个关键问题：公司应该在哪些产品市场和业务领域竞争？以及，公司总部应如何管理这些业务？小米集团从2010年仅有手机业务，发展到今天拥有“手机、IoT生态链、智能汽车”三大板块，是分析这两个问题的绝佳案例。此交互式报告将深入探讨其多元化战略。</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-blue-50 p-6 rounded-lg border border-blue-200">
+                            <h3 class="font-semibold text-lg text-blue-800 mb-2">1. 我们分析什么？</h3>
+                            <p class="text-blue-700">分析小米如何从单一的手机业务，扩展到“相关约束型”（生态链）和“相关联系型”（造车）的多元化战略。</p>
+                        </div>
+                        <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                            <h3 class="font-semibold text-lg text-gray-800 mb-2">2. 核心交互</h3>
+                            <p class="text-gray-700">点击顶部选项卡浏览。在“战略识别”中查看收入演变，在“价值创造”中点击2x2矩阵探索小米的战略逻辑。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. 行业环境 (Industry) -->
+            <section id="industry-content" class="content-section">
+                <div class="bg-white shadow-lg rounded-xl p-6 md:p-8 mb-8">
+                    <h2 class="text-2xl font-bold mb-4 text-blue-700">行业环境：压力的来源</h2>
+                    <p class="text-gray-700 leading-relaxed mb-6">我们首先分析小米的外部环境(PEST)和“原点”业务——智能手机——的行业环境(波特五力)，以理解其多元化的“价值中性动因”。结论是：智能手机行业是一个利润微薄、竞争惨烈、增长停滞的成熟市场。</p>
+                    
+                    <h3 class="text-xl font-semibold mb-4 text-gray-800">全球智能手机出货量趋势</h3>
+                    <div class="chart-container mb-8">
+                        <canvas id="smartphoneMarketChart"></canvas>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-4 text-gray-800">PEST 分析</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                        <div class="bg-gray-50 p-4 rounded-lg border">
+                            <h4 class="font-bold text-lg text-gray-700">政治 (P)</h4>
+                            <p class="text-gray-600">国际贸易摩擦、数据安全法规、新能源汽车扶持政策。</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-lg border">
+                            <h4 class="font-bold text-lg text-gray-700">经济 (E)</h4>
+                            <p class="text-gray-600">全球经济放缓、消费者购买力变化、研发投入成本上升。</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-lg border">
+                            <h4 class="font-bold text-lg text-gray-700">社会 (S)</h4>
+                            <p class="text-gray-600">追求万物互联、Z世代消费习惯、绿色环保（ESG）意识。</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-lg border">
+                            <h4 class="font-bold text-lg text-gray-700">技术 (T)</h4>
+                            <p class="text-gray-600">5G/AI/IoT技术成熟、新能源汽车三电技术革新。</p>
+                        </div>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-4 text-gray-800">智能手机行业：波特五力模型</h3>
+                    <!-- HTML/Tailwind 实现的波特五力图 -->
+                    <div class="porter-five-forces">
+                        <div class="porter-box" style="grid-area: supplier;">
+                            <h4 class="font-bold text-center text-lg text-red-600">供应商议价能力 (高)</h4>
+                            <p class="text-sm text-center text-gray-600">核心芯片（高通）、操作系统（谷歌）高度集中。</p>
+                        </div>
+                        <div class="porter-box" style="grid-area: new;">
+                            <h4 class="font-bold text-center text-lg text-green-600">新进入者威胁 (低)</h4>
+                            <p class="text-sm text-center text-gray-600">极高的资本、技术、供应链壁垒。</p>
+                        </div>
+                        <div class="porter-box bg-blue-100 border-blue-300" style="grid-area: rivals;">
+                            <h4 class="font-bold text-center text-xl text-blue-800">现有竞争者 (高)</h4>
+                            <p class="text-sm text-center text-gray-700">苹果、三星、华为、OV。价格战、营销战、技术战极为激烈。</p>
+                        </div>
+                        <div class="porter-box" style="grid-area: buyer;">
+                            <h4 class="font-bold text-center text-lg text-red-600">购买者议价能力 (高)</h4>
+                            <p class="text-sm text-center text-gray-600">市场选择多、产品同质化、转换成本低。</p>
+                        </div>
+                        <div class="porter-box" style="grid-area: substitute;">
+                            <h4 class="font-bold text-center text-lg text-green-600">替代品威胁 (低)</h4>
+                            <p class="text-sm text-center text-gray-600">目前智能手机尚无成熟替代品。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. 战略识别 (Strategy ID) -->
+            <section id="strategy-id-content" class="content-section">
+                <div class="bg-white shadow-lg rounded-xl p-6 md:p-8">
+                    <h2 class="text-2xl font-bold mb-4 text-blue-700">战略识别：多元化的层次及类型</h2>
+                    <p class="text-gray-700 leading-relaxed mb-6">根据收入来源的集中度，小米的多元化战略经历了清晰的演进。我们使用其官方财报数据，重现了这一变化。从“主导业务”到“相关约束型”，再到“相关联系型”。</p>
+                    
+                    <h3 class="text-xl font-semibold mb-4 text-center text-gray-800">小米收入结构演进</h3>
+                    
+                    <div class="flex justify-center space-x-2 md:space-x-4 mb-6">
+                        <button id="btn-2013" class="revenue-btn bg-blue-500 text-white font-semibold py-2 px-5 rounded-full shadow hover:bg-blue-600 transition">2013</button>
+                        <button id="btn-2019" class="revenue-btn bg-gray-200 text-gray-700 font-semibold py-2 px-5 rounded-full shadow hover:bg-gray-300 transition">2019</button>
+                        <button id="btn-2023" class="revenue-btn bg-gray-200 text-gray-700 font-semibold py-2 px-5 rounded-full shadow hover:bg-gray-300 transition">2023</button>
+                    </div>
+
+                    <p id="revenue-text" class="text-center text-gray-600 mb-4 h-12"></p>
+
+                    <div class="chart-container">
+                        <canvas id="revenueMixChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. 核心动因 (Motives) -->
+            <section id="motives-content" class="content-section">
+                <div class="bg-white shadow-lg rounded-xl p-6 md:p-8">
+                    <h2 class="text-2xl font-bold mb-4 text-blue-700">核心分析：多元化的“三个主要原因”</h2>
+                    <p class="text-gray-700 leading-relaxed mb-6">我们使用课堂理论框架来分析小米多元化的动因。结论是：小米的多元化主要是由“价值中性”（行业压力）和“价值创造”（主动收益）动因共同驱动的。</p>
+
+                    <div class="flex flex-col md:flex-row gap-6">
+                        <!-- 动因一 -->
+                        <div class="flex-1 bg-gray-50 p-6 rounded-lg border border-gray-200">
+                            <h3 class="font-bold text-lg text-gray-800 mb-3">1. 价值中性动因 (Value-Neutral)</h3>
+                            <p class="text-gray-600 mb-2">这是小米“不得不”多元化的原因。</p>
+                            <ul class="list-disc list-inside text-gray-600 space-y-1">
+                                <li><strong>应对低业绩 (Low Performance)：</strong> 手机行业是“红海”，硬件毛利极低。</li>
+                                <li><strong>应对未来现金流不确定性：</strong> 智能手机市场饱和，增长停滞。</li>
+                                <li><strong>利用过剩的无形资源：</strong> “米粉”品牌号召力 和 MIUI/澎湃OS 的用户基数。</li>
+                            </ul>
+                        </div>
+                        <!-- 动因二 -->
+                        <div class="flex-1 bg-blue-50 p-6 rounded-lg border border-blue-200">
+                            <h3 class="font-bold text-lg text-blue-800 mb-3">2. 价值创造型动因 (Value-Creating)</h3>
+                            <p class="text-blue-700 mb-2">这是小米“主动”多元化的原因。</p>
+                            <ul class="list-disc list-inside text-blue-700 space-y-1">
+                                <li><strong>实现范围经济 (Economies of Scope)：</strong> 通过“共享活动”（生态链）和“传递核心能力”（造车）。</li>
+                                <li><strong>增强市场影响力 (Market Power)：</strong> 通过“多点竞争”（vs 华为/苹果）和“前向一体化”（小米之家）。</li>
+                                <li><strong>实现财务经济 (Financial Economies)：</strong> 利用“内部资本市场”，用手机的现金流“输血”造车。</li>
+                            </ul>
+                        </div>
+                        <!-- 动因三 -->
+                        <div class="flex-1 bg-yellow-50 p-6 rounded-lg border border-yellow-200">
+                            <h3 class="font-bold text-lg text-yellow-800 mb-3">3. 价值降低型动因 (Value-Reducing)</h3>
+                            <p class="text-yellow-700 mb-2">评估是否存在管理者自利动机。</p>
+                            <ul class="list-disc list-inside text-yellow-700 space-y-1">
+                                <li><strong>分散管理者风险？</strong> <span class="font-semibold">不适用。</span> 造车是“资本黑洞”，极大地集中了风险。</li>
+                                <li><strong>增加管理者报酬？</strong> <span class="font-semibold">非主要动因。</span> 战略意图远大于个人财务动机。</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. 价值创造 (Value Creation) -->
+            <section id="value-creation-content" class="content-section">
+                <div class="bg-white shadow-lg rounded-xl p-6 md:p-8">
+                    <h2 class="text-2xl font-bold mb-4 text-blue-700">价值创造路径：2x2 矩阵（可交互）</h2>
+                    <p class="text-gray-700 leading-relaxed mb-6">公司主要通过“经营层面相关性”（共享活动）和“公司层面相关性”（传递核心能力）来创造价值。小米的两种多元化业务清晰地落在了矩阵的两个不同象限。**请点击下方矩阵中的两个高亮象限**。</p>
+
+                    <!-- HTML/Tailwind 实现的 2x2 矩阵 -->
+                    <div class="w-full max-w-3xl mx-auto border-l border-b border-gray-400 grid grid-cols-2 grid-rows-2">
+                        <!-- 左上 -->
+                        <div class="p-4 border-t border-r border-gray-400 h-48 md:h-56 flex flex-col justify-center items-center bg-gray-50">
+                            <h4 class="font-bold text-lg text-gray-700 text-center">非相关多元化</h4>
+                            <p class="text-sm text-gray-500 text-center">(低经营, 低公司)</p>
+                        </div>
+                        <!-- 右上 -->
+                        <div id="quadrant-eco" class="p-4 border-t border-r border-gray-400 h-48 md:h-56 flex flex-col justify-center items-center bg-blue-100 cursor-pointer hover:bg-blue-200 transition">
+                            <h4 class="font-bold text-lg md:text-xl text-blue-800 text-center">相关约束型</h4>
+                            <p class="text-sm text-blue-600 text-center mb-2">(高经营, 高公司)</p>
+                            <span class="font-semibold text-blue-900 text-lg">小米生态链 (IoT)</span>
+                        </div>
+                        <!-- 左下 -->
+                        <div class="p-4 border-t border-r border-gray-400 h-48 md:h-56 flex justify-center items-center">
+                            <span class="text-2xl font-bold text-gray-400 -rotate-90 transform origin-center">经营相关性 (低)</span>
+                        </div>
+                        <!-- 右下 -->
+                        <div id="quadrant-auto" class="p-4 border-t border-r border-gray-400 h-48 md:h-56 flex flex-col justify-center items-center bg-blue-100 cursor-pointer hover:bg-blue-200 transition">
+                            <h4 class="font-bold text-lg md:text-xl text-blue-800 text-center">相关联系型</h4>
+                            <p class="text-sm text-blue-600 text-center mb-2">(低经营, 高公司)</p>
+                            <span class="font-semibold text-blue-900 text-lg">小米智能汽车</span>
+                        </div>
+                    </div>
+                    <div class="w-full max-w-3xl mx-auto grid grid-cols-2 text-center mt-2">
+                        <div class="font-bold text-gray-700">公司相关性 (低)</div>
+                        <div class="font-bold text-gray-700">公司相关性 (高)</div>
+                    </div>
+
+                    <!-- 交互式内容显示区域 -->
+                    <div id="matrix-details" class="mt-8 p-6 bg-gray-50 rounded-lg border border-gray-200 min-h-[150px]">
+                        <p class="text-gray-500 text-center">请点击矩阵中蓝色高亮的象限以查看详细的价值创造路径。</p>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- 6. 绩效与风险 (Performance) -->
+            <section id="performance-content" class="content-section">
+                <div class="bg-white shadow-lg rounded-xl p-6 md:p-8">
+                    <h2 class="text-2xl font-bold mb-4 text-blue-700">绩效与风险</h2>
+                    <p class="text-gray-700 leading-relaxed mb-6">多元化战略是否成功，最终要看财务和战略绩效。数据显示，小米的多元化在分散风险、提高盈利能力方面已取得成效，但也面临多线作战的巨大风险。</p>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                        <div>
+                            <h3 class="text-xl font-semibold mb-4 text-gray-800">财务绩效 (一)：收入结构</h3>
+                            <p class="text-sm text-gray-600 mb-4">IoT和互联网服务收入占比稳步提升，对手机业务的依赖度正在降低。</p>
+                            <div class="chart-container">
+                                <canvas id="performanceRevenueChart"></canvas>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold mb-4 text-gray-800">财务绩效 (二)：盈利能力 (2023)</h3>
+                            <p class="text-sm text-gray-600 mb-4">互联网服务的毛利率远高于硬件，证明了“流量入口”+“利润奶牛”模式的成功。</p>
+                            <div class="chart-container">
+                                <canvas id="performanceProfitChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-xl font-semibold mb-4 text-gray-800">财务绩效 (三)：汽车业务 (初期)</h3>
+                            <div class="space-y-4">
+                                <div class="bg-gray-100 p-4 rounded-lg">
+                                    <p class="text-sm text-gray-500">2023年研发投入</p>
+                                    <p class="text-2xl font-bold text-gray-800">67 亿元</p>
+                                </div>
+                                <div class="bg-gray-100 p-4 rounded-lg">
+                                    <p class="text-sm text-gray-500">累计交付量 (截至2025年中)</p>
+                                    <p class="text-2xl font-bold text-gray-800">~20 万台</p>
+                                    <p class="text-xs text-gray-500">(此为基于报告的合理预测值)</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold mb-4 text-red-600">战略风险</h3>
+                            <ul class="list-disc list-inside text-gray-700 space-y-2">
+                                <li><strong class="text-red-700">多线作战：</strong> 同时在手机、IoT、汽车三个“红海”市场面临苹果、华为、美的、特斯拉等巨头竞争。</li>
+                                <li><strong class="text-red-700">财务黑洞：</strong> 汽车业务是“资本黑洞”，长期亏损可能拖垮主业的现金流。</li>
+                                <li><strong class="text-red-700">协同失败：</strong> 如果“人车家”的澎湃OS生态协同失败，造车的“公司相关性”逻辑将不成立。</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- 数据存储 ---
+            // 智能手机市场数据 (模拟真实趋势)
+            const smartphoneMarketData = {
+                labels: ['2020', '2021', '2022', '2023', '2024(e)'],
+                datasets: [{
+                    label: '全球智能手机出货量 (亿台)',
+                    data: [12.9, 13.5, 12.1, 11.7, 11.8],
+                    borderColor: '#2563eb',
+                    backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                    fill: true,
+                    tension: 0.1
+                }]
+            };
+
+            // 小米收入结构数据 (基于财报)
+            const revenueData = {
+                '2013': {
+                    labels: ['智能手机', 'IoT与生活消费产品', '互联网服务'],
+                    data: [90, 5, 5],
+                    text: '2013 (主导业务): 收入几乎全部来自智能手机。'
+                },
+                '2019': {
+                    labels: ['智能手机', 'IoT与生活消费产品', '互联网服务'],
+                    data: [60, 30, 10],
+                    text: '2019 (相关约束型): IoT已占30%收入，与手机高度共享。'
+                },
+                '2023': {
+                    labels: ['智能手机', 'IoT与生活消费产品', '互联网服务', '其他'],
+                    data: [58.6, 27.2, 13.9, 0.3],
+                    text: '2023 (相关联系型): 三大板块稳定，准备孵化汽车业务。'
+                }
+            };
+            
+            // 小米盈利能力数据 (基于2023年财报)
+            const profitData = {
+                labels: ['智能手机', 'IoT与生活消费产品', '互联网服务'],
+                datasets: [{
+                    label: '毛利率 (%)',
+                    data: [14.6, 16.3, 74.2],
+                    backgroundColor: ['#93c5fd', '#60a5fa', '#2563eb'],
+                    borderRadius: 5
+                }]
+            };
+            
+            // 业绩页的收入结构图 (堆叠面积图)
+            const performanceRevenueData = {
+                labels: ['2020', '2021', '2022', '2023', '2024(e)'],
+                datasets: [
+                    {
+                        label: '智能手机',
+                        data: [1246, 1464, 1229, 1135, 1150],
+                        backgroundColor: '#60a5fa',
+                    },
+                    {
+                        label: 'IoT与生活消费产品',
+                        data: [674, 850, 798, 710, 730],
+                        backgroundColor: '#93c5fd',
+                    },
+                    {
+                        label: '互联网服务',
+                        data: [238, 282, 283, 301, 320],
+                        backgroundColor: '#2563eb',
+                    }
+                ]
+            };
+
+            // --- 矩阵交互内容 ---
+            const matrixDetails = {
+                'eco': {
+                    title: '相关约束型: 小米生态链 (IoT)',
+                    strategy: '经营相关性 (Operational Relatedness) - 行为共享 (Sharing Activities)',
+                    points: [
+                        '<strong>共享渠道:</strong> 所有生态链产品入驻“小米之家”，极大降低营销成本。',
+                        '<strong>共享供应链:</strong> 以小米的体量统一议价，降低采购成本。',
+                        '<strong>共享品牌:</strong> “米家(Mijia)”品牌背书，降低用户认知成本。'
+                    ]
+                },
+                'auto': {
+                    title: '相关联系型: 小米智能汽车',
+                    strategy: '公司相关性 (Corporate Relatedness) - 传递核心竞争力',
+                    points: [
+                        '<strong>经营不相关:</strong> 造车与造手机在生产、供应链上无法共享。',
+                        '<strong>传递核心能力:</strong> 小米将OS、用户体验、品牌营销等“无形资源”转移到汽车业务。',
+                        '<strong>财务经济:</strong> 利用“内部资本市场”，用手机业务的现金流“输血”造车。'
+                    ]
+                }
+            };
+            
+            // --- Chart.js 通用配置 ---
+            const chartTooltipConfig = {
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                const item = tooltipItems[0];
+                                let label = item.chart.data.labels[item.dataIndex];
+                                return Array.isArray(label) ? label.join(' ') : label;
+                            }
+                        }
+                    },
+                    legend: {
+                        labels: {
+                            font: {
+                                family: "'Inter', sans-serif"
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            font: {
+                                family: "'Inter', sans-serif"
+                            }
+                        }
+                    },
+                    y: {
+                        ticks: {
+                            font: {
+                                family: "'Inter', sans-serif"
+                            }
+                        }
+                    }
+                }
+            };
+
+            // --- 选项卡导航 ---
+            const tabs = document.querySelectorAll('.nav-tab');
+            const sections = document.querySelectorAll('.content-section');
+            const contentArea = document.getElementById('content-area');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const target = tab.getAttribute('data-target');
+
+                    // 更新选项卡样式
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+
+                    // 显示/隐藏内容
+                    sections.forEach(section => {
+                        if (section.id === `${target}-content`) {
+                            section.classList.add('active');
+                        } else {
+                            section.classList.remove('active');
+                        }
+                    });
+                });
+            });
+
+            // --- 图表渲染 ---
+            let revenueMixChartInstance = null;
+            const revenueMixCanvas = document.getElementById('revenueMixChart');
+            const revenueTextEl = document.getElementById('revenue-text');
+            
+            // 渲染收入饼图 (可交互)
+            function renderRevenueMixChart(year) {
+                if (revenueMixChartInstance) {
+                    revenueMixChartInstance.destroy();
+                }
+                
+                const data = revenueData[year];
+                revenueTextEl.textContent = data.text;
+                
+                // 更新按钮状态
+                document.querySelectorAll('.revenue-btn').forEach(btn => {
+                    if (btn.id === `btn-${year}`) {
+                        btn.classList.add('bg-blue-500', 'text-white');
+                        btn.classList.remove('bg-gray-200', 'text-gray-700');
+                    } else {
+                        btn.classList.remove('bg-blue-500', 'text-white');
+                        btn.classList.add('bg-gray-200', 'text-gray-700');
+                    }
+                });
+
+                revenueMixChartInstance = new Chart(revenueMixCanvas, {
+                    type: 'pie',
+                    data: {
+                        labels: data.labels,
+                        datasets: [{
+                            data: data.data,
+                            backgroundColor: ['#2563eb', '#60a5fa', '#93c5fd', '#dbeafe'],
+                            hoverOffset: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        ...chartTooltipConfig
+                    }
+                });
+            }
+
+            // 收入饼图按钮事件
+            document.getElementById('btn-2013').addEventListener('click', () => renderRevenueMixChart('2013'));
+            document.getElementById('btn-2019').addEventListener('click', () => renderRevenueMixChart('2019'));
+            document.getElementById('btn-2023').addEventListener('click', () => renderRevenueMixChart('2023'));
+
+            // 渲染行业环境图表 (折线图)
+            new Chart(document.getElementById('smartphoneMarketChart'), {
+                type: 'line',
+                data: smartphoneMarketData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    ...chartTooltipConfig
+                }
+            });
+            
+            // 渲染绩效图表 (堆叠面积图)
+            new Chart(document.getElementById('performanceRevenueChart'), {
+                type: 'bar', // 改为 Bar 以更好地显示堆叠
+                data: performanceRevenueData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { stacked: true },
+                        y: { stacked: true }
+                    },
+                    ...chartTooltipConfig
+                }
+            });
+
+            // 渲染绩效图表 (柱状图)
+            new Chart(document.getElementById('performanceProfitChart'), {
+                type: 'bar',
+                data: profitData,
+                options: {
+                    indexAxis: 'y', // 横向柱状图
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    ...chartTooltipConfig,
+                    plugins: { ...chartTooltipConfig.plugins, legend: { display: false } }
+                }
+            });
+
+            // --- 2x2 矩阵交互 ---
+            const matrixDetailsEl = document.getElementById('matrix-details');
+            const quadrantEco = document.getElementById('quadrant-eco');
+            const quadrantAuto = document.getElementById('quadrant-auto');
+
+            function updateMatrixDetails(key) {
+                const data = matrixDetails[key];
+                matrixDetailsEl.innerHTML = `
+                    <h4 class="font-bold text-xl text-blue-800 mb-2">${data.title}</h4>
+                    <p class="font-semibold text-gray-700 mb-3">${data.strategy}</p>
+                    <ul class="list-disc list-inside text-gray-600 space-y-1">
+                        ${data.points.map(p => `<li>${p}</li>`).join('')}
+                    </ul>
+                `;
+            }
+
+            quadrantEco.addEventListener('click', () => updateMatrixDetails('eco'));
+            quadrantAuto.addEventListener('click', () => updateMatrixDetails('auto'));
+
+            // --- 初始加载 ---
+            renderRevenueMixChart('2013'); // 默认显示2013年
+
+        });
+    </script>
+
+</body>
+</html>
